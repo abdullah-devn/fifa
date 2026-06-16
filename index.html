@@ -643,7 +643,17 @@ function openProduct(id){
  document.getElementById('pmClose').onclick=closeAll;
  pm.querySelectorAll('#mSizes button').forEach(b=>b.onclick=()=>{pm.querySelectorAll('#mSizes button').forEach(x=>x.classList.remove('on'));b.classList.add('on');MODAL_SIZE=b.dataset.s;});
  pm.querySelectorAll('#mQty button').forEach(b=>b.onclick=()=>{MODAL_QTY=Math.max(1,MODAL_QTY+ +b.dataset.mq);document.getElementById('mQtyV').textContent=MODAL_QTY;});
- document.getElementById('mAdd').onclick=()=>{ if(!MODAL_SIZE){toast(t('pick_size'));return;} addToCart(p.id,MODAL_SIZE,MODAL_QTY); closeAll(); openCart(); };
+ document.getElementById('mAdd').onclick=()=>{
+   if(!MODAL_SIZE){
+     const firstSz=pm.querySelector('#mSizes button');
+     if(firstSz){
+       pm.querySelectorAll('#mSizes button').forEach(x=>x.classList.remove('on'));
+       firstSz.classList.add('on');
+       MODAL_SIZE=firstSz.dataset.s;
+     } else {toast(t('pick_size'));return;}
+   }
+   addToCart(p.id,MODAL_SIZE,MODAL_QTY); closeAll(); openCart();
+ };
 }
 function checkout(){
  if(!CART.length)return;
